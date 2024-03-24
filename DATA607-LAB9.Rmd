@@ -1,0 +1,51 @@
+---
+title: "DATA607-LAB9"
+author: "Biyag Dukuray"
+output: html_document
+date: "2024-03-20"
+---
+
+## Assignment – Web APIs
+
+**The New York Times web site provides a rich set of APIs, as described here:** https://developer.nytimes.com/apis
+**You’ll need to start by signing up for an API key. Your task is to choose one of the New York Times APIs, construct an interface in R to read in the JSON data, and transform it into an R DataFrame.**
+
+```{r}
+library(jsonlite)
+library(httr)
+library(purrr)
+
+url <- "https://api.nytimes.com/svc/books/v3/lists/names.json?api-key=POly7DhxmA60a8GvBxlAvolA9ZLaQvkA"
+json_data <- fromJSON(url)
+raw_data <- json_data$results
+colnames(raw_data)
+```
+
+**I entered the raw JSON data from the API into a dataframe that I named raw_data. Upon doing this, I extracted the column names to see how this dataframe should be structured. I then extracted the specific columns and entered this data into a dataframe to this display my API data.**
+
+```{r}
+
+list_name <- raw_data$list_name
+display_name <- raw_data$display_name
+list_name_encoded <- raw_data$list_name_encoded
+oldest_published_date <- raw_data$oldest_published_date
+newest_published_date <- raw_data$newest_published_date
+updated <- raw_data$updated
+
+
+APIdf <- data.frame(
+  list_name = list_name,
+  display_name = display_name,
+  list_name_encoded = list_name_encoded,
+  oldest_published_date = oldest_published_date,
+  newest_published_date = newest_published_date,
+  updated = updated)
+```
+
+**Upon completing this data tidying and transformation, my data was entered into a dataframe that I named 'APIdf' This displays the data that the API has provided to me**
+
+```{r}
+# Displaying the dataframe
+print(APIdf)
+```
+
